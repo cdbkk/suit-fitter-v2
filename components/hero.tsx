@@ -46,8 +46,8 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{
           opacity: [0, 1, 1, 1],
-          y: [0, 0, 0, "-20vh"],
-          scale: [1.15, 1.15, 1.15, 0.95],
+          y: [0, 0, 0, "-25vh"],
+          scale: [1.15, 1.15, 1.15, 0.8],
         }}
         transition={{
           duration: 2.7,
@@ -235,7 +235,7 @@ export function Hero() {
         transition={{ duration: 0.9, delay: 2.8, ease: EASE }}
       >
         <h1 className="font-serif leading-none text-foreground tracking-tight mb-6 md:mb-8 flex flex-col items-center w-full">
-          <span className="block text-5xl md:text-8xl lg:text-[8.5rem] font-black">
+          <span className="block text-5xl md:text-8xl lg:text-[8.5rem] font-bold">
             Tailored in Phuket.
           </span>
           <span className="block italic font-light text-4xl md:text-7xl lg:text-[7rem] mt-2 md:mt-4 text-foreground/80 tracking-normal">
@@ -245,7 +245,7 @@ export function Hero() {
 
         {/* Subtitle */}
         <motion.p
-          className="text-[10px] md:text-sm tracking-[0.2em] uppercase text-foreground/50 font-sans mb-8 md:mb-12"
+          className="text-xs md:text-sm tracking-[0.2em] uppercase text-foreground/60 font-sans mb-8 md:mb-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 3.0, ease: EASE }}
