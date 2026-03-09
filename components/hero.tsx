@@ -46,8 +46,8 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{
           opacity: [0, 1, 1, 1],
-          y: [0, 0, 0, "-25vh"],
-          scale: [1.15, 1.15, 1.15, 0.8],
+          y: [0, 0, 0, "-22vh"],
+          scale: [1.15, 1.15, 1.15, 0.7],
         }}
         transition={{
           duration: 2.7,
@@ -55,7 +55,7 @@ export function Hero() {
           ease: [0.76, 0, 0.24, 1],
         }}
       >
-        <svg viewBox="0 0 500 150" className="w-[85vw] max-w-lg md:max-w-2xl text-foreground overflow-visible" fill="none">
+        <svg viewBox="0 0 500 150" className="w-[85vw] max-w-lg md:max-w-2xl lg:max-w-4xl text-foreground overflow-visible" fill="none">
 
           {/* Decorative line that draws first */}
           <motion.line
@@ -228,17 +228,17 @@ export function Hero() {
 
       {/* Main Content — appears AFTER logo has fully settled */}
       <motion.div
-        className="w-full max-w-5xl mx-auto flex flex-col items-center text-center relative z-10 pt-[10vh] md:pt-[12vh]"
+        className="w-full max-w-5xl mx-auto flex flex-col items-center text-center relative z-10 pt-[10vh] md:pt-[8vh]"
         style={{ opacity: 0 }}
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, delay: 2.8, ease: EASE }}
       >
         <h1 className="font-serif leading-none text-foreground tracking-tight mb-6 md:mb-8 flex flex-col items-center w-full">
-          <span className="block text-5xl md:text-8xl lg:text-[8.5rem] font-bold">
+          <span className="block text-5xl md:text-7xl lg:text-8xl font-bold">
             Tailored in Phuket.
           </span>
-          <span className="block italic font-light text-4xl md:text-7xl lg:text-[7rem] mt-2 md:mt-4 text-foreground/80 tracking-normal">
+          <span className="block italic font-light text-4xl md:text-6xl lg:text-7xl mt-2 md:mt-3 text-foreground/80 tracking-normal">
             Worn Everywhere.
           </span>
         </h1>
