@@ -46,7 +46,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{
           opacity: [0, 1, 1, 1],
-          y: [0, 0, 0, "-22vh"],
+          y: [0, 0, 0, "-30vh"],
           scale: [1.15, 1.15, 1.15, 0.7],
         }}
         transition={{
@@ -245,12 +245,16 @@ export function Hero() {
 
         {/* Subtitle */}
         <motion.p
-          className="text-xs md:text-sm tracking-[0.2em] uppercase text-foreground/60 font-sans mb-8 md:mb-12"
+          className="text-xs md:text-sm tracking-[0.2em] uppercase text-foreground/60 font-sans mb-8 md:mb-12 flex flex-col md:flex-row items-center gap-1 md:gap-0"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 3.0, ease: EASE }}
         >
-          900+ five-star reviews. 800+ fabrics. One perfect fit.
+          <span>900+ five-star reviews</span>
+          <span className="hidden md:inline">&nbsp;·&nbsp;</span>
+          <span>800+ fabrics</span>
+          <span className="hidden md:inline">&nbsp;·&nbsp;</span>
+          <span>One perfect fit</span>
         </motion.p>
 
         {/* CTAs */}
