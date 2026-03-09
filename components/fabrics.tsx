@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useScrollReveal } from "@/hooks/use-scroll-reveal"
+import { motion, type Variants } from "framer-motion"
 
 const fabricHouses = [
   {
@@ -37,7 +37,7 @@ const fabricTypes = [
   },
   {
     name: "Silk & Linen",
-    description: "Breathable elegance for Bangkok's climate. Perfect for warm-weather sophistication."
+    description: "Breathable elegance for Thailand's tropical climate. Perfect for warm-weather sophistication."
   },
   {
     name: "Mohair",
@@ -45,97 +45,135 @@ const fabricTypes = [
   }
 ]
 
-export function Fabrics() {
-  const { ref, isVisible } = useScrollReveal()
+const fadeUpVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+}
 
+const imageVariants: Variants = {
+  hidden: { opacity: 0, scale: 1.03 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+}
+
+const staggerVariants: Variants = {
+  visible: { transition: { staggerChildren: 0.1 } },
+}
+
+export function Fabrics() {
   return (
-    <section className="py-24 lg:py-32 bg-card">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="py-10 lg:py-32 bg-card">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24">
           {/* Left Column - Content */}
           <div>
-            <div ref={ref} className={isVisible ? 'reveal visible' : 'reveal'}>
-            <div className="flex items-center gap-4 mb-6">
-              <div className="h-px w-12 bg-primary" />
-              <span className="text-sm font-medium tracking-[0.3em] text-primary uppercase">
-                Our Fabrics
-              </span>
-            </div>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+              variants={staggerVariants}
+            >
+              <motion.div variants={fadeUpVariants} className="flex items-center gap-4 mb-6">
+                <div className="h-px w-12 bg-accent" />
+                <span className="text-sm font-medium tracking-[0.3em] text-accent uppercase">
+                  Our Fabrics
+                </span>
+              </motion.div>
 
-            <h2 className="font-serif text-4xl md:text-5xl font-light leading-tight text-foreground mb-6">
-              The World&apos;s Finest
-              <span className="italic text-primary block">Cloths & Mills</span>
-            </h2>
+              <motion.h2 variants={fadeUpVariants} className="font-serif text-4xl md:text-5xl font-light leading-tight text-foreground mb-6">
+                The World&apos;s Finest
+                <span className="italic text-accent block">Cloths & Mills</span>
+              </motion.h2>
 
-            <p className="text-muted-foreground leading-relaxed mb-12">
-              We source exclusively from the world&apos;s most prestigious mills—houses that have
-              woven fabrics for royalty, heads of state, and discerning gentlemen for generations.
-              Each bolt that enters our atelier meets exacting standards of quality, hand, and heritage.
-            </p>
-            </div>
+              <motion.p variants={fadeUpVariants} className="text-muted-foreground leading-relaxed mb-12">
+                We source exclusively from the world&apos;s most prestigious mills—houses that have
+                woven fabrics for royalty, heads of state, and discerning gentlemen for generations.
+                Each bolt that enters our atelier meets exacting standards of quality, hand, and heritage.
+              </motion.p>
+            </motion.div>
 
             {/* Fabric Types */}
-            <div className="space-y-6">
-              {fabricTypes.map((type, index) => (
-                <div key={index} className="flex gap-4 p-4 bg-background/50 border border-border/50">
-                  <div className="w-1 bg-primary flex-shrink-0" />
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-80px" }}
+              variants={staggerVariants}
+              className="space-y-6"
+            >
+              {fabricTypes.map((type) => (
+                <motion.div key={type.name} variants={fadeUpVariants} className="flex gap-4 p-4 bg-background/50 border border-border/50">
+                  <div className="w-1 bg-accent flex-shrink-0" />
                   <div>
                     <h3 className="font-medium text-foreground mb-1">{type.name}</h3>
                     <p className="text-sm text-muted-foreground">{type.description}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
 
           {/* Right Column - Image & Mills */}
-          <div className="space-y-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={staggerVariants}
+            className="space-y-8"
+          >
             {/* Fabric Image */}
-            <div className="relative h-80 overflow-hidden">
+            {/* TODO: Replace /images/fabrics.jpg — current image shows a forest, not fabric. Source a proper fabric swatch/roll photo. */}
+            <motion.div variants={imageVariants} className="relative h-80 overflow-hidden">
               <Image
                 src="/images/fabrics.jpg"
-                alt="Premium suit fabrics"
+                alt="Curated fabric collection"
                 fill
                 className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent" />
-            </div>
+            </motion.div>
 
             {/* Partner Mills */}
-            <div>
+            <motion.div variants={fadeUpVariants}>
               <h3 className="text-sm font-medium tracking-[0.2em] text-muted-foreground uppercase mb-6">
                 Our Partner Mills
               </h3>
 
-              <div className="grid grid-cols-2 gap-4">
-                {fabricHouses.map((house, index) => (
-                  <div 
-                    key={index} 
-                    className="p-4 border border-border hover:border-primary/50 transition-colors group"
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-80px" }}
+                variants={staggerVariants}
+                className="grid grid-cols-2 gap-4"
+              >
+                {fabricHouses.map((house) => (
+                  <motion.div
+                    key={house.name}
+                    variants={fadeUpVariants}
+                    className="p-4 border border-border hover:border-accent/50 transition-colors group"
                   >
-                    <h4 className="font-serif text-lg text-foreground group-hover:text-primary transition-colors">
+                    <h4 className="font-serif text-lg text-foreground group-hover:text-accent transition-colors">
                       {house.name}
                     </h4>
                     <p className="text-xs text-muted-foreground mt-1">{house.location}</p>
                     <p className="text-xs text-muted-foreground mt-2 italic">{house.specialty}</p>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Fabric Count Note */}
-            <div className="flex items-center gap-4 p-6 bg-primary/10 border border-primary/20">
+            <motion.div variants={fadeUpVariants} className="flex items-center gap-4 p-6 bg-accent/10 border border-accent/20">
               <div className="text-center">
-                <span className="font-serif text-4xl text-primary">800+</span>
+                <span className="font-serif text-4xl text-accent">800+</span>
                 <p className="text-xs text-muted-foreground mt-1">Fabric Swatches</p>
               </div>
-              <div className="w-px h-16 bg-primary/30" />
+              <div className="w-px h-16 bg-accent/30" />
               <p className="text-sm text-muted-foreground flex-1">
-                Our library encompasses over 800 fabric swatches, regularly updated with the 
+                Our library encompasses over 800 fabric swatches, regularly updated with the
                 latest seasonal collections from each partner mill.
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

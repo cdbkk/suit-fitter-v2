@@ -1,7 +1,16 @@
 "use client"
 
 import Image from "next/image"
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
+
+const headerStaggerVariants: Variants = {
+  visible: { transition: { staggerChildren: 0.1 } }
+}
+
+const headerChildVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+}
 
 const steps = [
   {
@@ -38,78 +47,176 @@ const steps = [
 
 export function Process() {
   return (
-    <section id="process" className="py-24 lg:py-40 bg-background relative z-10 w-full overflow-hidden">
+    <section id="process" className="py-10 lg:py-32 bg-background relative z-10 w-full overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
 
         {/* Header */}
-        <div className="mb-24 md:mb-32 max-w-2xl">
-          <div className="flex items-center gap-4 mb-8">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={headerStaggerVariants}
+          className="mb-8 md:mb-24 max-w-2xl"
+        >
+          <motion.div
+            variants={headerChildVariants}
+            className="flex items-center gap-4 mb-8"
+          >
             <span className="text-xs font-medium tracking-[0.3em] text-accent uppercase">
               The Journey
             </span>
             <div className="h-px w-12 bg-accent/50" />
-          </div>
+          </motion.div>
 
-          <h2 className="font-serif text-5xl md:text-7xl font-black tracking-tight leading-[0.9] mb-8 uppercase">
+          <motion.h2
+            variants={headerChildVariants}
+            className="font-serif text-5xl md:text-7xl font-black tracking-tight leading-[0.9] mb-8 uppercase"
+          >
             Crafting <br />
             <span className="italic font-light lowercase text-4xl md:text-6xl text-muted-foreground block mt-2">
               sartorial excellence
             </span>
-          </h2>
+          </motion.h2>
 
-          <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed max-w-lg">
+          <motion.p
+            variants={headerChildVariants}
+            className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed max-w-lg"
+          >
             A painstaking orchestration of heritage craftsmanship, transforming exceptional cloth into a garment that is undeniably and intimately yours.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        {/* Steps List */}
-        <div className="flex flex-col w-full">
-          {steps.map((step, index) => (
-            <ProcessStep key={step.id} step={step} index={index} />
-          ))}
+        {/* Swipe hint - mobile only */}
+        <div className="flex items-center gap-2 mb-8 md:hidden">
+          <span className="text-xs font-medium tracking-[0.2em] text-muted-foreground uppercase">
+            Swipe to explore
+          </span>
+          <svg
+            width="20"
+            height="12"
+            viewBox="0 0 20 12"
+            fill="none"
+            className="text-muted-foreground"
+          >
+            <path
+              d="M1 6h17M13 1l5 5-5 5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </div>
 
       </div>
+
+      {/* Mobile: Horizontal scroll carousel */}
+      <div className="md:hidden">
+        <div className="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar px-6 pb-4">
+          {steps.map((step, index) => (
+            <MobileCard key={step.id} step={step} index={index} />
+          ))}
+          {/* End spacer so last card can snap to center */}
+          <div className="shrink-0 w-[15vw]" />
+        </div>
+      </div>
+
+      {/* Desktop: Vertical list */}
+      <div className="hidden md:block max-w-[1400px] mx-auto px-6 lg:px-12">
+        <div className="flex flex-col w-full">
+          {steps.map((step, index) => (
+            <DesktopStep key={step.id} step={step} index={index} />
+          ))}
+        </div>
+      </div>
+
     </section>
   )
 }
 
-function ProcessStep({ step, index }: { step: typeof steps[0], index: number }) {
+function MobileCard({ step, index }: { step: typeof steps[0]; index: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="group flex flex-col md:flex-row items-stretch border-t border-foreground/10 py-12 md:py-16 gap-8 md:gap-12"
+      initial={{ opacity: 0, x: 40 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className="shrink-0 w-[85vw] snap-center"
+    >
+      <div className="relative aspect-[4/3] overflow-hidden mb-5">
+        <Image
+          src={step.image}
+          alt={step.title}
+          fill
+          className="object-cover"
+          sizes="85vw"
+        />
+        <div className="absolute top-4 left-4">
+          <span className="font-serif text-5xl font-black text-white/30">
+            {step.id}
+          </span>
+        </div>
+      </div>
+      <h3 className="font-serif text-2xl mb-3">
+        {step.title}
+      </h3>
+      <p className="text-sm text-muted-foreground font-light leading-relaxed">
+        {step.description}
+      </p>
+    </motion.div>
+  )
+}
+
+const staggerVariants: Variants = {
+  visible: { transition: { staggerChildren: 0.1 } },
+}
+
+const desktopChildVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+}
+
+const desktopImageVariants: Variants = {
+  hidden: { opacity: 0, scale: 1.03 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+}
+
+function DesktopStep({ step, index }: { step: typeof steps[0]; index: number }) {
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
+      variants={staggerVariants}
+      className="group flex flex-row items-stretch border-t border-foreground/10 py-16 gap-12"
     >
       {/* Number Column */}
-      <div className="md:w-1/6 flex md:justify-center md:items-start">
-        <span className="font-serif text-6xl md:text-7xl font-black text-foreground/20 group-hover:text-accent transition-colors duration-500">
+      <motion.div variants={desktopChildVariants} className="w-1/6 flex justify-center items-start">
+        <span className="font-serif text-7xl font-black text-foreground/20 group-hover:text-accent transition-colors duration-500">
           {step.id}
         </span>
-      </div>
+      </motion.div>
 
       {/* Image Column */}
-      <div className="w-full md:w-5/12 aspect-[4/3] relative overflow-hidden">
+      <motion.div variants={desktopImageVariants} className="w-5/12 aspect-[4/3] relative overflow-hidden">
         <Image
           src={step.image}
           alt={step.title}
           fill
           className="object-cover transition-transform duration-1000 group-hover:scale-105 filter group-hover:brightness-110"
-          sizes="(max-width: 768px) 100vw, 40vw"
+          sizes="40vw"
         />
-      </div>
+      </motion.div>
 
       {/* Content Column */}
-      <div className="md:w-5/12 flex flex-col justify-center">
-        <h3 className="font-serif text-3xl md:text-4xl mb-4 group-hover:text-accent transition-colors duration-500">
+      <motion.div variants={desktopChildVariants} className="w-5/12 flex flex-col justify-center">
+        <h3 className="font-serif text-4xl mb-4 group-hover:text-accent transition-colors duration-500">
           {step.title}
         </h3>
-        <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed">
+        <p className="text-lg text-muted-foreground font-light leading-relaxed">
           {step.description}
         </p>
-      </div>
+      </motion.div>
     </motion.div>
   )
 }

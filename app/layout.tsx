@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Playfair_Display, Outfit } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { MotionProvider } from '@/components/motion-provider'
 import './globals.css'
 
 const playfair = Playfair_Display({
@@ -16,10 +17,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: 'Suit Fitter | Luxury Tailoring',
-  description: 'Experience the pinnacle of bespoke tailoring. Hand-crafted suits with master craftsmanship, premium fabrics, and timeless elegance.',
+  title: 'Suit Fitter | Bespoke Tailoring in Phuket',
+  description: 'Experience the pinnacle of bespoke tailoring in Patong Beach, Phuket. Hand-crafted suits with master craftsmanship, premium fabrics, and timeless elegance.',
   metadataBase: new URL('https://suit-fitter.com'),
-  generator: 'v0.app',
   icons: {
     icon: [
       {
@@ -37,6 +37,13 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+  openGraph: {
+    title: 'Suit Fitter | Bespoke Tailoring in Phuket',
+    description: 'Experience the pinnacle of bespoke tailoring in Patong Beach, Phuket.',
+    type: 'website',
+    locale: 'en_US',
+    siteName: 'Suit Fitter',
+  },
 }
 
 export default function RootLayout({
@@ -47,7 +54,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} ${playfair.variable} font-sans antialiased text-foreground bg-background`}>
-        {children}
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-foreground focus:text-background focus:px-4 focus:py-2 focus:text-sm">
+          Skip to content
+        </a>
+        <MotionProvider>
+          {children}
+        </MotionProvider>
         <Analytics />
       </body>
     </html>

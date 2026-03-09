@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react"
-import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 
 const testimonials = [
   {
@@ -24,7 +24,7 @@ const testimonials = [
     location: "Hong Kong"
   },
   {
-    quote: "I was skeptical about finding Savile Row-quality tailoring in Bangkok, but Suit Fitter exceeded every expectation. The fabric selection is world-class, and the construction is impeccable. I now fly in specifically for my fittings.",
+    quote: "I was skeptical about finding Savile Row-quality tailoring in Thailand, but Suit Fitter exceeded every expectation. The fabric selection is world-class, and the construction is impeccable. I now fly in specifically for my fittings.",
     name: "Michael Hartmann",
     title: "Investment Banker",
     location: "Frankfurt"
@@ -33,65 +33,81 @@ const testimonials = [
 
 export function Testimonials() {
   const [current, setCurrent] = useState(0)
-  const { ref, isVisible } = useScrollReveal()
 
   const next = () => setCurrent((prev) => (prev + 1) % testimonials.length)
   const prev = () => setCurrent((prev) => (prev - 1 + testimonials.length) % testimonials.length)
 
   return (
-    <section className="py-24 lg:py-32 bg-card">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+    <section className="py-12 lg:py-24 bg-foreground text-background">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div ref={ref} className={`text-center max-w-2xl mx-auto mb-16 ${isVisible ? 'reveal visible' : 'reveal'}`}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center max-w-2xl mx-auto mb-16"
+        >
           <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-px w-12 bg-primary" />
-            <span className="text-sm font-medium tracking-[0.3em] text-primary uppercase">
+            <div className="h-px w-12 bg-accent" />
+            <span className="text-sm font-medium tracking-[0.3em] text-accent uppercase">
               Testimonials
             </span>
-            <div className="h-px w-12 bg-primary" />
+            <div className="h-px w-12 bg-accent" />
           </div>
 
-          <h2 className="font-serif text-4xl md:text-5xl font-light leading-tight text-foreground">
+          <h2 className="font-serif text-4xl md:text-5xl font-light leading-tight text-background">
             Words from Our
-            <span className="italic text-primary block">Distinguished Patrons</span>
+            <span className="italic text-accent block">Distinguished Patrons</span>
           </h2>
-        </div>
+        </motion.div>
 
         {/* Testimonial Carousel */}
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto" role="region" aria-label="Client testimonials">
           <div className="relative">
             {/* Quote Icon */}
-            <Quote className="w-16 h-16 text-primary/20 absolute -top-4 -left-4 lg:-left-12" />
+            <Quote className="w-16 h-16 text-accent/20 absolute -top-4 -left-4 lg:-left-12" />
 
             {/* Testimonial Content */}
-            <div key={current} className="relative z-10 px-4 lg:px-12 animate-fade-in">
-              <blockquote className="font-serif text-xl md:text-2xl lg:text-3xl font-light text-foreground leading-relaxed italic mb-8">
-                &ldquo;{testimonials[current].quote}&rdquo;
-              </blockquote>
+            <div aria-live="polite">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={current}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                className="relative z-10 px-4 lg:px-12"
+              >
+                <blockquote className="font-serif text-xl md:text-2xl lg:text-3xl font-light text-background leading-relaxed italic mb-8">
+                  &ldquo;{testimonials[current].quote}&rdquo;
+                </blockquote>
 
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-px bg-primary" />
-                <div>
-                  <p className="font-medium text-foreground">{testimonials[current].name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {testimonials[current].title} · {testimonials[current].location}
-                  </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-px bg-accent" />
+                  <div>
+                    <p className="font-medium text-background">{testimonials[current].name}</p>
+                    <p className="text-sm text-background/60">
+                      {testimonials[current].title} · {testimonials[current].location}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
+            </AnimatePresence>
             </div>
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-between mt-12 pt-8 border-t border-border">
+          <div className="flex items-center justify-between mt-12 pt-8 border-t border-background/20">
             {/* Dots */}
             <div className="flex gap-2">
               {testimonials.map((_, index) => (
                 <button
-                  key={index}
+                  key={testimonials[index].name}
                   onClick={() => setCurrent(index)}
                   className={`w-2 h-2 transition-all ${index === current
-                      ? "w-8 bg-primary"
-                      : "bg-primary/30 hover:bg-primary/50"
+                      ? "w-8 bg-accent"
+                      : "bg-accent/30 hover:bg-accent/50"
                     }`}
                   aria-label={`Go to testimonial ${index + 1}`}
                 />
@@ -102,14 +118,14 @@ export function Testimonials() {
             <div className="flex gap-2">
               <button
                 onClick={prev}
-                className="w-12 h-12 flex items-center justify-center border border-border hover:border-primary hover:text-primary transition-colors"
+                className="w-12 h-12 flex items-center justify-center border border-background/20 hover:border-accent hover:text-accent transition-colors"
                 aria-label="Previous testimonial"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
                 onClick={next}
-                className="w-12 h-12 flex items-center justify-center border border-border hover:border-primary hover:text-primary transition-colors"
+                className="w-12 h-12 flex items-center justify-center border border-background/20 hover:border-accent hover:text-accent transition-colors"
                 aria-label="Next testimonial"
               >
                 <ChevronRight className="w-5 h-5" />

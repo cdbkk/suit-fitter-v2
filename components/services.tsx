@@ -2,7 +2,28 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { useScrollReveal } from "@/hooks/use-scroll-reveal"
+
+const smoothEase = [0.16, 1, 0.3, 1] as const
+
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12 } }
+}
+
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: smoothEase } }
+}
+
+const imageRevealVariants = {
+  hidden: { scale: 1.03, opacity: 0 },
+  visible: { scale: 1, opacity: 1, transition: { duration: 0.9, ease: smoothEase } }
+}
+
+const noopVariants = {
+  hidden: {},
+  visible: {},
+}
 
 const services = [
   {
@@ -29,28 +50,19 @@ const services = [
 ]
 
 export function Services() {
-  const { ref: headerRef, isVisible: isHeaderVisible } = useScrollReveal()
-
-  const fadeUpVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] as const } }
-  }
-
   return (
-    <section id="services" className="pt-24 lg:pt-32 pb-0 bg-background overflow-hidden relative border-t border-border/30">
+    <section id="services" className="pt-16 lg:pt-32 pb-0 bg-background overflow-hidden relative border-t border-border/30">
 
       {/* Intro Header */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-16 mb-24 lg:mb-32">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-16 mb-10 lg:mb-24">
         <motion.div
-          ref={headerRef}
           initial="hidden"
-          animate={isHeaderVisible ? "visible" : "hidden"}
-          variants={{
-            visible: { transition: { staggerChildren: 0.1 } }
-          }}
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={containerVariants}
           className="flex flex-col items-center text-center"
         >
-          <motion.div variants={fadeUpVariants} className="flex items-center gap-6 mb-8">
+          <motion.div variants={fadeUpVariants} className="flex items-center gap-6 mb-6 lg:mb-8">
             <span className="text-[10px] uppercase tracking-[0.4em] font-light text-foreground/50">
               Chapter II
             </span>
@@ -58,22 +70,29 @@ export function Services() {
 
           <motion.h2
             variants={fadeUpVariants}
-            className="font-serif text-5xl md:text-7xl font-black leading-[0.85] text-foreground tracking-tighter"
+            className="font-serif text-4xl md:text-7xl font-black leading-[0.85] text-foreground tracking-tighter"
           >
             Garments of
-            <span className="block italic text-foreground/70 font-light mt-4">Distinction</span>
+            <span className="block italic text-foreground/70 font-light mt-2 lg:mt-4">Distinction</span>
           </motion.h2>
         </motion.div>
       </div>
 
-      {/* Alternating Services */}
-      <div className="flex flex-col w-full">
+      {/* Mobile: Compact stacked cards */}
+      <div className="lg:hidden px-6 space-y-6 pb-12">
+        {services.map((service, index) => (
+          <MobileServiceCard key={service.title} service={service} index={index + 1} />
+        ))}
+      </div>
+
+      {/* Desktop: Alternating full-width blocks */}
+      <div className="hidden lg:flex flex-col w-full">
         {services.map((service, index) => {
           const isEven = index % 2 === 0
 
           return (
             <ServiceBlock
-              key={index}
+              key={service.title}
               service={service}
               index={index + 1}
               isEven={isEven}
@@ -85,65 +104,135 @@ export function Services() {
   )
 }
 
-function ServiceBlock({ service, index, isEven }: { service: typeof services[0], index: number, isEven: boolean }) {
-  const { ref, isVisible } = useScrollReveal()
-
+function MobileServiceCard({ service, index }: { service: typeof services[0], index: number }) {
   return (
-    <div ref={ref} className="w-full relative min-h-screen flex items-center mb-32 lg:mb-0">
-      <div className="w-full max-w-[100rem] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+    <motion.div
+      initial={{ opacity: 0, y: 20, scale: 0.98 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.7, ease: smoothEase }}
+      className="relative overflow-hidden"
+    >
+      {/* Image */}
+      <div className="relative h-[45vw] w-full overflow-hidden">
+        <Image
+          src={service.image}
+          alt={service.title}
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+        <span className="absolute bottom-3 left-4 font-serif text-4xl text-foreground/20 font-black">
+          0{index}
+        </span>
+      </div>
+
+      {/* Content */}
+      <div className="pt-4 pb-2">
+        <h3 className="font-serif text-2xl font-black text-foreground mb-2 leading-none">
+          {service.title}
+        </h3>
+        <p className="font-light text-sm text-foreground/70 leading-relaxed mb-4">
+          {service.description}
+        </p>
+
+        {/* Features as inline tags */}
+        <div className="flex flex-wrap gap-2 mb-4">
+          {service.features.map((feature) => (
+            <span key={feature} className="text-[11px] uppercase tracking-[0.15em] text-foreground/60 border border-foreground/10 px-2.5 py-1">
+              {feature}
+            </span>
+          ))}
+        </div>
+
+        {/* Price + CTA */}
+        <div className="flex items-center justify-between border-t border-foreground/10 pt-4">
+          <div>
+            <span className="block text-[9px] uppercase tracking-[0.3em] text-foreground/40 mb-0.5">Starting</span>
+            <span className="font-serif text-xl text-foreground">{service.price}</span>
+          </div>
+          <a
+            href="#consultation"
+            className="text-xs uppercase tracking-[0.2em] font-medium text-accent hover:text-foreground transition-colors"
+          >
+            Enquire &rarr;
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+function ServiceBlock({ service, index, isEven }: { service: typeof services[0], index: number, isEven: boolean }) {
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
+      variants={noopVariants}
+      className="w-full relative min-h-[70vh] flex items-center"
+    >
+      <div className="w-full max-w-[1400px] mx-auto grid grid-cols-2 gap-24 items-center">
 
         {/* Content Side */}
-        <div className={`px-6 lg:px-16 flex flex-col justify-center order-2 ${isEven ? 'lg:order-1 lg:items-end lg:text-right' : 'lg:order-2 lg:items-start lg:text-left'} py-12 lg:py-0 relative z-20`}>
+        <div className={`px-16 flex flex-col justify-center ${isEven ? 'order-1 items-end text-right' : 'order-2 items-start text-left'} relative z-20`}>
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-            transition={{ duration: 1, ease: [0.21, 0.47, 0.32, 0.98] }}
+            variants={containerVariants}
             className="max-w-lg w-full"
           >
             {/* Numbering */}
-            <div className={`mb-12 ${isEven ? 'flex justify-end' : 'flex justify-start'}`}>
+            <motion.div variants={fadeUpVariants} className={`mb-8 ${isEven ? 'flex justify-end' : 'flex justify-start'}`}>
               <span className="font-serif text-6xl text-foreground/20 font-black">
                 0{index}
               </span>
-            </div>
+            </motion.div>
 
-            <h3 className="font-serif text-4xl lg:text-5xl font-black text-foreground mb-6 leading-none">
-              {service.title}
-            </h3>
+            <motion.div variants={fadeUpVariants}>
+              <h3 className="font-serif text-4xl lg:text-5xl font-black text-foreground mb-6 leading-none">
+                {service.title}
+              </h3>
+            </motion.div>
 
-            <p className="font-light text-sm lg:text-base text-foreground/60 leading-relaxed mb-10">
-              {service.description}
-            </p>
+            <motion.div variants={fadeUpVariants}>
+              <p className="font-light text-sm lg:text-base text-foreground/70 leading-relaxed mb-10">
+                {service.description}
+              </p>
+            </motion.div>
 
             {/* Micro Details (Features) */}
-            <div className={`flex flex-col gap-4 mb-12 ${isEven ? 'items-end' : 'items-start'}`}>
-              {service.features.map((feature, idx) => (
-                <div key={idx} className={`flex items-center gap-4 ${isEven ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className="w-1 h-1 rounded-full bg-accent" />
-                  <span className="text-xs uppercase tracking-[0.2em] text-foreground/70 font-medium">
+            <motion.div variants={fadeUpVariants} className={`flex flex-col gap-3 mb-8 ${isEven ? 'items-end' : 'items-start'}`}>
+              {service.features.map((feature) => (
+                <div key={feature} className={`flex items-center gap-4 ${isEven ? 'flex-row-reverse' : 'flex-row'}`}>
+                  <div className="w-3 h-[1px] bg-accent" />
+                  <span className="text-sm uppercase tracking-[0.2em] text-foreground/70 font-medium">
                     {feature}
                   </span>
                 </div>
               ))}
-            </div>
+            </motion.div>
 
             {/* Price & Book */}
-            <div className={`flex items-center gap-8 ${isEven ? 'justify-end' : 'justify-start'} border-t border-foreground/10 pt-8 mt-12`}>
+            <motion.div variants={fadeUpVariants} className={`flex items-center gap-8 ${isEven ? 'justify-end' : 'justify-start'} border-t border-foreground/10 pt-6 mt-8`}>
               <div>
                 <span className="block text-[10px] uppercase tracking-[0.3em] text-foreground/40 mb-1">Starting Investment</span>
-                <span className="font-serif text-2xl text-foreground">{service.price}</span>
+                <span className="font-serif text-3xl text-foreground">{service.price}</span>
               </div>
-            </div>
+              <a
+                href="#consultation"
+                className="text-xs uppercase tracking-[0.2em] font-medium text-foreground/70 hover:text-accent transition-colors"
+              >
+                Enquire &rarr;
+              </a>
+            </motion.div>
           </motion.div>
         </div>
 
         {/* Image Side */}
-        <div className={`relative h-[60vh] lg:h-screen w-full order-1 ${isEven ? 'lg:order-2' : 'lg:order-1'} overflow-hidden`}>
+        <div className={`relative h-[85vh] w-full ${isEven ? 'order-2' : 'order-1'} overflow-hidden`}>
           <motion.div
             className="absolute inset-0"
-            initial={{ scale: 1.1 }}
-            animate={isVisible ? { scale: 1 } : { scale: 1.1 }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
+            variants={imageRevealVariants}
           >
             <Image
               src={service.image}
@@ -153,10 +242,9 @@ function ServiceBlock({ service, index, isEven }: { service: typeof services[0],
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
           </motion.div>
-          {/* Subtle overlay gradient to merge harsh edges into the background if needed, or left raw for print style */}
         </div>
 
       </div>
-    </div>
+    </motion.div>
   )
 }

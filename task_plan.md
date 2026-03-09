@@ -1,82 +1,65 @@
-# Suit Fitter Demo Site - UI Review Fixes
+# Suit Fitter v2 - Round 2 Fixes
 
 ## Goal
-Fix all 24 issues from the 4-agent UI review to make the suitv2 demo site ready to send to Danny (Daniel Taylor), a British bespoke tailor in Patong Beach, Phuket.
+Fix all 24 items from the comprehensive UI/code review + apply Gemini design feedback.
+4 parallel agents, non-overlapping file ownership.
 
-## Phases
+## Design Direction (Gemini + /frontend-design)
+- Kill ALL purple (#8426C1, #B342DD) → gold accent (oklch(0.74 0.10 80) / #C5A059)
+- Background: warm cream not stark white (adjust --background slightly)
+- Tighten vertical spacing (hero delay, mobile padding)
+- Slow marquee (30s → 45s)
+- Hero animation: 2.5s → 1.5s before content
+- Add prefers-reduced-motion globally via MotionConfig
 
-### Phase 1: Placeholder Content Fix [pending]
-**Agent: 1 (content-fix)**
-Replace all fake/Bangkok content with Danny's real info.
+## Agent 1: Hero + Header + Layout
+**Files:** hero.tsx, header.tsx, app/layout.tsx
+| # | Fix | Priority |
+|---|-----|----------|
+| 1 | Hero animation 2.5s → 1.5s delay | CRITICAL |
+| 7 | Mobile menu: focus trap, aria-expanded, Escape key | CRITICAL |
+| 8 | Add MotionConfig reducedMotion="user" wrapping children in layout | IMPORTANT |
+| 9 | Skip-to-content link before header | IMPORTANT |
+| 10 | Purple bowtie/tag → gold in hero SVG | IMPORTANT |
+| 13 | Remove generator: 'v0.app' from metadata | IMPORTANT |
+| 14 | Add OG image to metadata | IMPORTANT |
+| 22 | Hero SVG: Times New Roman → Playfair Display fallback | POLISH |
+| 24 | Header scroll listener: add { passive: true } | POLISH |
+| G1 | Warm up background (--background slightly off-white) in layout | DESIGN |
 
-Files: `hero.tsx`, `atelier.tsx`, `consultation.tsx`, `fabrics.tsx`, `testimonials.tsx`, `footer.tsx`, `app/layout.tsx`
+## Agent 2: Styles + Marquee + Testimonials + Trust
+**Files:** globals.css, marquee.tsx, testimonials.tsx, trust-badges.tsx
+| # | Fix | Priority |
+|---|-----|----------|
+| 12 | Testimonial: add aria-live="polite", role="region" | IMPORTANT |
+| 15 | Marquee: fix duplicate keys (prefix per render) | IMPORTANT |
+| 16 | Marquee: add prefers-reduced-motion pause | IMPORTANT |
+| 18 | Remove dead .reveal CSS classes | POLISH |
+| 21a | Array index → stable keys (trust-badges, testimonials) | POLISH |
+| G2 | Slow marquee 30s → 45s | DESIGN |
+| G3 | Add subtle paper-grain texture CSS to globals | DESIGN |
 
-- [ ] 1.1 Founder name: "Khun Somchai Rattanakit" → "Daniel Taylor" (consultation.tsx:88)
-- [ ] 1.2 Atelier address: Bangkok → Patong Beach, Phuket (atelier.tsx:21-23)
-- [ ] 1.3 Atelier description: "Bangkok's premier district" → Phuket-appropriate (atelier.tsx:16)
-- [ ] 1.4 Footer address: Gaysorn Village Bangkok → Patong Beach Phuket (footer.tsx)
-- [ ] 1.5 Footer brand description: "in the heart of Bangkok" → Phuket (footer.tsx)
-- [ ] 1.6 Phone numbers: Bangkok 02 prefix → Phuket 076 or mobile (atelier.tsx:55-56, footer.tsx)
-- [ ] 1.7 Fabrics "Bangkok's climate" → "Phuket's climate" (fabrics.tsx:42)
-- [ ] 1.8 Testimonial #4 "tailoring in Bangkok" → "tailoring in Phuket" (testimonials.tsx:28)
-- [ ] 1.9 Metadata: Add Phuket/Patong Beach to title+description (app/layout.tsx)
-- [ ] 1.10 Social links: placeholder → remove or use # with proper labels (footer.tsx)
+## Agent 3: Visual + Images + Sections
+**Files:** services.tsx, process.tsx, philosophy.tsx, fabrics.tsx, image-break.tsx, atelier.tsx
+| # | Fix | Priority |
+|---|-----|----------|
+| 2 | Check/fix hero-tailor.jpg (broken, naturalWidth:0) | CRITICAL |
+| 3 | fabrics.jpg shows forest → needs real fabric image | CRITICAL |
+| 11 | Add priority prop to LCP image (image-break) | IMPORTANT |
+| 17 | Philosophy image sizes: 100vw → 80vw/55vw mobile | IMPORTANT |
+| 20 | Inline variant objects → module scope (services, process) | POLISH |
+| 21b | Array index → stable keys (services, fabrics) | POLISH |
+| 23 | Standardize max-w to [1400px] across sections | POLISH |
+| G4 | Tighten mobile section padding (py-12 → py-10 on mobile) | DESIGN |
 
-### Phase 2: Hero & Conversion Fixes [pending]
-**Agent: 2 (hero-conversion)**
-Fix hero timing, CTA prominence, and add conversion elements.
+## Agent 4: Consultation + Footer + Shared
+**Files:** consultation.tsx, footer.tsx, lib/animations.ts (new)
+| # | Fix | Priority |
+|---|-----|----------|
+| 4 | Wire form to server action or Resend | CRITICAL |
+| 5 | Placeholder phone → Danny's real numbers (or clear TODO) | CRITICAL |
+| 6 | Placeholder social links → real URLs or remove | CRITICAL |
+| 19 | Extract shared animation constants to lib/animations.ts | POLISH |
+| 21c | Array index → stable keys (consultation checklist) | POLISH |
 
-Files: `hero.tsx`, `services.tsx`, `consultation.tsx`, `header.tsx`
-
-- [ ] 2.1 Hero: Run logo + content concurrently. CTA visible within 2s (hero.tsx)
-- [ ] 2.2 Hero: Primary CTA filled → `bg-foreground text-background` default state (hero.tsx:130)
-- [ ] 2.3 Hero: Remove blur(12px), use opacity-only reveal (hero.tsx:99)
-- [ ] 2.4 Hero: Reduce "Patong Beach" tracking from 0.3em to 0.2em (hero.tsx:114)
-- [ ] 2.5 Services: Add "Book Consultation" CTA link to each service block (services.tsx:131-136)
-- [ ] 2.6 Services: Bump price to text-3xl (services.tsx:134)
-- [ ] 2.7 Consultation: Add WhatsApp button alongside the form (consultation.tsx)
-- [ ] 2.8 Header: Fix mobile logo size (w-44 → w-40, desktop w-44) (header.tsx:48)
-- [ ] 2.9 Header: Change transition-all → transition-[transform,opacity] (header.tsx:25)
-
-### Phase 3: Visual Consistency [pending]
-**Agent: 3 (visual-consistency)**
-Align containers, tokens, animation systems across all sections.
-
-Files: `fabrics.tsx`, `testimonials.tsx`, `services.tsx`, `philosophy.tsx`, `globals.css`
-
-- [ ] 3.1 Fabrics: max-w-7xl → max-w-[1400px], px-8 → px-12 (fabrics.tsx:53)
-- [ ] 3.2 Fabrics: lg:py-32 → lg:py-40 (fabrics.tsx:52)
-- [ ] 3.3 Fabrics: Replace text-primary with text-accent everywhere (fabrics.tsx:60,67,81,116,127,129)
-- [ ] 3.4 Fabrics: Convert from CSS .reveal to Framer Motion whileInView (fabrics.tsx)
-- [ ] 3.5 Testimonials: max-w-7xl → max-w-[1400px] (testimonials.tsx:43)
-- [ ] 3.6 Testimonials: Convert CSS .reveal to Framer Motion (testimonials.tsx)
-- [ ] 3.7 Services: body text opacity /60 → /70 (services.tsx:114)
-- [ ] 3.8 Services: features text-xs → text-sm, dot → gold dash (services.tsx:119-127)
-- [ ] 3.9 Philosophy: grid gap-16 lg:gap-8 → gap-8 lg:gap-16 (philosophy.tsx:18)
-- [ ] 3.10 Philosophy: body text sm → base, font-light → font-normal (philosophy.tsx:48)
-
-### Phase 4: Animation & Polish [pending]
-**Agent: 4 (animation-polish)**
-Fix animation issues, accessibility, form UX.
-
-Files: `suit-animation.tsx`, `testimonials.tsx`, `consultation.tsx`, `services.tsx`
-
-- [ ] 4.1 Suit animation: Swap stroke widths (mobile thicker, desktop thinner) (suit-animation.tsx:35)
-- [ ] 4.2 Suit animation: text-[10px] → text-xs (suit-animation.tsx:122)
-- [ ] 4.3 Testimonials: Add AnimatePresence for enter/exit transitions (testimonials.tsx)
-- [ ] 4.4 Form: Add focus-visible ring styles (consultation.tsx inputs)
-- [ ] 4.5 Form: Add dropdown chevron icon to select (consultation.tsx:164-177)
-- [ ] 4.6 Form: Add autocomplete attributes (consultation.tsx inputs)
-- [ ] 4.7 Services: Add staggered animation with child variants (services.tsx:97-100)
-- [ ] 4.8 Services: Reduce y:50 → y:30 and duration 1s → 0.8s (services.tsx:98-100)
-
-## Execution Strategy
-- Run 4 agents in parallel (one per phase)
-- Each agent reads files first, makes targeted edits
-- After all complete: reload, check console errors, visual verify
-- Copy all changed files to suitv2-backup/
-
-## Notes
-- Danny's real info: Daniel Taylor, Patong Beach, Phuket. We don't have his real phone/email/address — use plausible Phuket placeholders for now
-- The bowtie + phuket tag in the logo SVG is the REAL brand — do not change
-- Backup everything to suitv2-backup/ after changes
+## Status: LAUNCHING
