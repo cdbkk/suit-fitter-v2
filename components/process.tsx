@@ -4,7 +4,8 @@ import Image from "next/image"
 import { motion, type Variants } from "framer-motion"
 
 const headerStaggerVariants: Variants = {
-  visible: { transition: { staggerChildren: 0.1 } }
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
 }
 
 const headerChildVariants: Variants = {
@@ -134,13 +135,13 @@ export function Process() {
   )
 }
 
-function MobileCard({ step, index }: { step: typeof steps[0]; index: number }) {
+function MobileCard({ step }: { step: typeof steps[0]; index: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: 40 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, scale: 0.97 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "0px" }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className="shrink-0 w-[85vw] snap-center"
     >
       <div className="relative aspect-[4/3] overflow-hidden mb-5">
@@ -150,6 +151,7 @@ function MobileCard({ step, index }: { step: typeof steps[0]; index: number }) {
           fill
           className="object-cover"
           sizes="85vw"
+          loading="eager"
         />
         <div className="absolute top-4 left-4">
           <span className="font-serif text-5xl font-black text-white/30">
@@ -168,7 +170,8 @@ function MobileCard({ step, index }: { step: typeof steps[0]; index: number }) {
 }
 
 const staggerVariants: Variants = {
-  visible: { transition: { staggerChildren: 0.1 } },
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
 }
 
 const desktopChildVariants: Variants = {
@@ -205,6 +208,7 @@ function DesktopStep({ step, index }: { step: typeof steps[0]; index: number }) 
           fill
           className="object-cover transition-transform duration-1000 group-hover:scale-105 filter group-hover:brightness-110"
           sizes="40vw"
+          loading="eager"
         />
       </motion.div>
 
