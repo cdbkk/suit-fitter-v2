@@ -1,0 +1,20 @@
+<svg viewBox="0 0 500 150" xmlns="http://www.w3.org/2000/svg">
+  <!-- SUIT -->
+  <text x="30" y="85" font-family="Times New Roman, Times, serif" font-size="64" fill="black" letter-spacing="1">SUIT</text>
+  
+  <!-- Bowtie -->
+  <g transform="translate(195, 60)">
+    <polygon points="0,-20 0,20 25,0" fill="#8426C1"/>
+    <polygon points="50,-20 50,20 25,0" fill="#8426C1"/>
+    <circle cx="25" cy="0" r="4" fill="#8426C1"/>
+  </g>
+
+  <!-- FITTER -->
+  <text x="260" y="85" font-family="Times New Roman, Times, serif" font-size="64" fill="black" letter-spacing="1">FITTER</text>
+
+  <!-- phuket tag -->
+  <g transform="translate(365, 80) rotate(4)">
+    <rect x="0" y="0" width="105" height="42" rx="4" fill="#B342DD"/>
+    <text x="52.5" y="28" font-family="Brush Script MT, Bradley Hand, cursive" font-style="italic" font-size="28" fill="white" text-anchor="middle">phuket</text>
+  </g>
+</svg>
