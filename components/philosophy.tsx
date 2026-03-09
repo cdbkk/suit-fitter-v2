@@ -65,13 +65,11 @@ export function Philosophy() {
 
             <motion.div variants={fadeUpVariants} className="space-y-6 text-base lg:text-lg font-light text-foreground/70 leading-relaxed max-w-md">
               <p>
-                At Suit Fitter, a truly exceptional suit is not merely worn—it becomes
-                an intimately personal extension of its owner.
+                A truly exceptional suit is not merely worn. It becomes a personal extension of its owner.
               </p>
               <p>
-                Our atelier stands at the prestigious crossroads of two great tailoring
-                traditions: the rigid, architectural elegance of London&apos;s Savile Row, and the obsessive,
-                meticulous hand-finishing techniques passed down through generations of Thai master craftsmen.
+                Our atelier blends the architectural elegance of Savile Row with the meticulous hand-finishing
+                of Thai master craftsmen, passed down through generations.
               </p>
               <p className="pt-4 font-medium text-foreground text-xs uppercase tracking-[0.2em]">
                 Every stitch holds intention.

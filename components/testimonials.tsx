@@ -6,25 +6,25 @@ import { ChevronLeft, ChevronRight, Quote } from "lucide-react"
 
 const testimonials = [
   {
-    quote: "After decades of tailoring experiences across London, Hong Kong, and Milan, I can confidently say that Suit Fitter represents the pinnacle of the craft. The attention to detail is extraordinary—they understood nuances about fit that I had never been able to articulate.",
+    quote: "After decades of tailoring across London, Hong Kong, and Milan, Suit Fitter represents the pinnacle. They understood nuances about fit I had never been able to articulate.",
     name: "James Richardson",
     title: "Managing Director, Private Equity",
     location: "Singapore"
   },
   {
-    quote: "My wedding suit from Suit Fitter was nothing short of perfection. The team guided me through every decision with patience and expertise. Months later, the suit still draws compliments at every event.",
+    quote: "My wedding suit was nothing short of perfection. The team guided every decision with patience and expertise. Months later, it still draws compliments.",
     name: "Tanawat Pongsakorn",
     title: "Tech Entrepreneur",
     location: "Bangkok"
   },
   {
-    quote: "As someone who has worn bespoke for 30 years, I recognize exceptional work when I see it. The canvas construction, the hand-finishing, the fit—everything speaks to true craftsmanship. This is tailoring as it should be.",
+    quote: "Having worn bespoke for 30 years, I recognize exceptional work. The canvas construction, the hand-finishing, the fit. This is tailoring as it should be.",
     name: "David Chen",
     title: "Senior Partner, Law Firm",
     location: "Hong Kong"
   },
   {
-    quote: "I was skeptical about finding Savile Row-quality tailoring in Thailand, but Suit Fitter exceeded every expectation. The fabric selection is world-class, and the construction is impeccable. I now fly in specifically for my fittings.",
+    quote: "Skeptical about finding Savile Row quality in Thailand, but Suit Fitter exceeded every expectation. World-class fabrics, impeccable construction. I now fly in for my fittings.",
     name: "Michael Hartmann",
     title: "Investment Banker",
     location: "Frankfurt"

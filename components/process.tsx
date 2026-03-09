@@ -17,31 +17,31 @@ const steps = [
   {
     id: "01",
     title: "The Consultation",
-    description: "Your journey begins in our atelier. Over carefully selected refreshments, we discuss your lifestyle, wardrobe needs, and personal aesthetic. We listen, advising on cuts and cloths that elevate your narrative.",
+    description: "Your journey begins in our atelier. We discuss your lifestyle, wardrobe needs, and personal aesthetic, advising on cuts and cloths that elevate your narrative.",
     image: "/images/atelier.jpg"
   },
   {
     id: "02",
     title: "Precision Measurement",
-    description: "Our master tailors take over 30 precise measurements, capturing the unique architecture of your posture and movement. This data forms the absolute foundation of your bespoke pattern.",
+    description: "Over 30 precise measurements capture your posture and movement. This data forms the foundation of your bespoke pattern.",
     image: "/images/measurement.jpg"
   },
   {
     id: "03",
     title: "Cloth & Character",
-    description: "Browse curated collections of the world's finest fabrics. From exclusive Super 150s wools to rare cashmeres, we guide you through weights, weaves, and the subtle art of selecting linings and horn buttons.",
+    description: "Browse our curated fabric library. From Super 150s wools to rare cashmeres, we guide you through weights, weaves, linings, and buttons.",
     image: "/images/fabrics.jpg"
   },
   {
     id: "04",
     title: "The Canvas Construction",
-    description: "Meticulously constructed over weeks. The jacket is hand-basted and shaped over a floating horsehair canvas, ensuring it molds to your body naturally over time rather than losing its pristine form.",
+    description: "Constructed over weeks. The jacket is hand-basted over a floating horsehair canvas, molding to your body naturally over time.",
     image: "/images/suit-detail.jpg"
   },
   {
     id: "05",
     title: "Fitting & Finality",
-    description: "You return as your garment takes shape in its basted state. We refine the silhouette, making minute adjustments to the drape and pitch to ensure the suit moves seamlessly with you before final delivery.",
+    description: "You return as your garment takes shape. We refine the silhouette, adjusting drape and pitch until the suit moves seamlessly with you.",
     image: "/images/finished-suit.jpg"
   }
 ]
@@ -83,7 +83,7 @@ export function Process() {
             variants={headerChildVariants}
             className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed max-w-lg"
           >
-            A painstaking orchestration of heritage craftsmanship, transforming exceptional cloth into a garment that is undeniably and intimately yours.
+            Heritage craftsmanship, transforming exceptional cloth into a garment that is undeniably yours.
           </motion.p>
         </motion.div>
 

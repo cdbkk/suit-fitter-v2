@@ -28,21 +28,21 @@ const noopVariants = {
 const services = [
   {
     title: "Bespoke Suits",
-    description: "The absolute pinnacle of tailoring artistry. Completely hand-cut and constructed to your unique anatomical architecture, utilizing the world's finest cloth.",
+    description: "Hand-cut and constructed to your unique anatomy, utilizing the world's finest cloth.",
     price: "From ฿95,000",
     features: ["Full canvas construction", "Hand-sewn buttonholes", "Working surgeon's cuffs", "Personalized monogram"],
     image: "/images/finished-suit.jpg"
   },
   {
     title: "Formal Eveningwear",
-    description: "Tuxedos and dinner jackets crafted with obsessive attention to detail. Designed for galas, weddings, and distinguished occasions demanding absolute perfection.",
+    description: "Tuxedos and dinner jackets for galas, weddings, and occasions demanding perfection.",
     price: "From ฿120,000",
     features: ["Silk lapels & facings", "Grosgrain waistband", "Mother of pearl buttons", "Satin-lined sleeves"],
     image: "/images/suit-detail.jpg"
   },
   {
     title: "Bespoke Shirts & Ties",
-    description: "The foundational layer of elegance. Hand-cut from the finest Egyptian cotton and Italian linen, finished with meticulous, single-needle stitching.",
+    description: "Hand-cut from Egyptian cotton and Italian linen, finished with single-needle stitching.",
     price: "From ฿8,500",
     features: ["Single-needle stitching", "Mother of pearl buttons", "Gusset reinforcement", "Personalized collar style"],
     image: "/images/fabrics.jpg"
@@ -122,7 +122,6 @@ function MobileServiceCard({ service, index }: { service: typeof services[0], in
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
         <span className="absolute bottom-3 left-4 font-serif text-4xl text-foreground/20 font-black">
           0{index}
         </span>

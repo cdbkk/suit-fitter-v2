@@ -60,9 +60,7 @@ export function Consultation() {
             </motion.h2>
 
             <motion.p variants={fadeUp} className="text-background/80 leading-relaxed mb-10">
-              Your bespoke journey begins with a conversation. Share your details below, and a
-              member of our team will personally reach out to arrange your consultation at a
-              time that suits you.
+              Share your details below and we will reach out to arrange your consultation.
             </motion.p>
 
             <motion.div variants={fadeUp} className="space-y-4">
@@ -70,11 +68,11 @@ export function Consultation() {
                 What to Expect
               </h3>
               {[
-                "A personal style consultation with our senior advisor",
-                "Access to our complete fabric library and design options",
-                "Precise body measurements by our master tailor",
-                "Transparent pricing with no hidden costs",
-                "Complimentary refreshments in our private fitting room"
+                "Personal style consultation with our senior advisor",
+                "Access to our complete fabric library",
+                "Precise measurements by our master tailor",
+                "Transparent pricing, no hidden costs",
+                "Complimentary refreshments in our fitting room"
               ].map((item) => (
                 <div key={item} className="flex items-start gap-3">
                   <div className="w-5 h-5 flex items-center justify-center bg-accent/20 mt-0.5">

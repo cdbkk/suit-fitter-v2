@@ -29,19 +29,19 @@ const fabricHouses = [
 const fabricTypes = [
   {
     name: "Super 150s Wool",
-    description: "The gold standard for business suiting. Luxuriously soft with excellent drape and recovery."
+    description: "The gold standard for business suiting. Soft with excellent drape and recovery."
   },
   {
     name: "Cashmere Blends",
-    description: "Unparalleled softness and warmth. Ideal for cooler climates and evening wear."
+    description: "Softness and warmth for cooler climates and evening wear."
   },
   {
     name: "Silk & Linen",
-    description: "Breathable elegance for Thailand's tropical climate. Perfect for warm-weather sophistication."
+    description: "Breathable elegance for tropical climates and warm-weather sophistication."
   },
   {
     name: "Mohair",
-    description: "A lustrous, resilient fiber that adds brilliance to dinner jackets and formal wear."
+    description: "Lustrous and resilient. Adds brilliance to dinner jackets and formal wear."
   }
 ]
 
@@ -85,9 +85,8 @@ export function Fabrics() {
               </motion.h2>
 
               <motion.p variants={fadeUpVariants} className="text-muted-foreground leading-relaxed mb-12">
-                We source exclusively from the world&apos;s most prestigious mills—houses that have
-                woven fabrics for royalty, heads of state, and discerning gentlemen for generations.
-                Each bolt that enters our atelier meets exacting standards of quality, hand, and heritage.
+                Sourced from the world&apos;s most prestigious mills. Houses that have woven for royalty
+                and discerning gentlemen for generations.
               </motion.p>
             </motion.div>
 
@@ -169,8 +168,7 @@ export function Fabrics() {
               </div>
               <div className="w-px h-16 bg-accent/30" />
               <p className="text-sm text-muted-foreground flex-1">
-                Our library encompasses over 800 fabric swatches, regularly updated with the
-                latest seasonal collections from each partner mill.
+                Over 800 swatches, updated seasonally from each partner mill.
               </p>
             </motion.div>
           </motion.div>

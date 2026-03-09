@@ -56,7 +56,7 @@ export function Atelier() {
               The Atelier
             </h2>
             <p className="text-xl md:text-2xl text-background/70 font-light leading-relaxed">
-              An oasis of calm in the heart of Patong Beach. Where tradition is honored, and your sartorial narrative begins.
+              Where tradition is honored, and your sartorial narrative begins.
             </p>
           </motion.div>
           <motion.div variants={childVariants} className="w-full lg:w-auto">
