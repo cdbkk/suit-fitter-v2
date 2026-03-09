@@ -3,100 +3,222 @@
 import { motion } from "framer-motion"
 
 const EASE = [0.21, 0.47, 0.32, 0.98] as const
+const DRAW_EASE = [0.65, 0, 0.35, 1] as const
 
-// Timeline:
-// 0.0 - 1.0s  Logo draws in (centered on screen)
-// 1.0 - 1.1s  Brief pause
-// 1.1 - 1.7s  Logo slides up to final position
-// 1.8s         Content fades in
-// 2.0s         Location text
-// 2.1s         CTAs
-// 2.5s         Border frames
+// Timeline (2.7s logo draw):
+// 0.0s         Logo container fades in from invisible
+// 0.0 - 0.2s   Thin horizontal line draws across center
+// 0.2 - 0.7s  "SUIT" letters stroke in one by one
+// 0.5 - 1.3s  Bowtie triangles draw and fill
+// 0.8 - 1.6s  "FITTER" letters stroke in one by one
+// 1.4 - 1.6s  Center knot pops
+// 1.7 - 2.0s  "phuket" tag swings in
+// 2.0 - 2.1s  Brief hold
+// 2.1 - 2.7s  Logo scales down and slides up
+// 2.8s         Content fades in
+// 3.0s         Location text
+// 3.1s         CTAs
+// 3.5s         Border frames
+
+const SUIT_LETTERS = [
+  { char: "S", x: 30, delay: 0.2, dashLen: 180 },
+  { char: "U", x: 62, delay: 0.33, dashLen: 160 },
+  { char: "I", x: 100, delay: 0.46, dashLen: 100 },
+  { char: "T", x: 120, delay: 0.56, dashLen: 140 },
+]
+
+const FITTER_LETTERS = [
+  { char: "F", x: 260, delay: 0.8, dashLen: 150 },
+  { char: "I", x: 293, delay: 0.9, dashLen: 100 },
+  { char: "T", x: 310, delay: 1.0, dashLen: 140 },
+  { char: "T", x: 340, delay: 1.1, dashLen: 140 },
+  { char: "E", x: 370, delay: 1.2, dashLen: 150 },
+  { char: "R", x: 403, delay: 1.3, dashLen: 160 },
+]
 
 export function Hero() {
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center bg-background px-6 overflow-hidden selection:bg-foreground selection:text-background">
 
-      {/* Logo — draws centered, then slides up */}
+      {/* Logo — starts invisible, fades in, draws, then slides up */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none"
-        animate={{ y: [0, 0, "-18vh"], scale: [1.15, 1.15, 0.8] }}
+        initial={{ opacity: 0 }}
+        animate={{
+          opacity: [0, 1, 1, 1],
+          y: [0, 0, 0, "-18vh"],
+          scale: [1.15, 1.15, 1.15, 0.8],
+        }}
         transition={{
-          duration: 1.7,
-          times: [0, 0.6, 1],
+          duration: 2.7,
+          times: [0, 0.02, 0.78, 1],
           ease: [0.76, 0, 0.24, 1],
         }}
       >
         <svg viewBox="0 0 500 150" className="w-[80vw] max-w-md md:max-w-xl text-foreground overflow-visible" fill="none">
-          {/* SUIT */}
-          <motion.text
-            x="30" y="85" fontFamily="'Playfair Display', Georgia, serif" fontSize="64" letterSpacing="1"
-            stroke="currentColor" strokeWidth="0.5"
-            initial={{ strokeDasharray: "300 300", strokeDashoffset: 300, fillOpacity: 0 }}
-            animate={{ strokeDashoffset: 0, fillOpacity: 1, fill: "currentColor" }}
-            transition={{
-              strokeDashoffset: { duration: 0.7, delay: 0.1, ease: "easeInOut" },
-              fillOpacity: { duration: 0.3, delay: 0.7 }
-            }}
-          >
-            SUIT
-          </motion.text>
 
-          {/* Bowtie */}
+          {/* Decorative line that draws first */}
+          <motion.line
+            x1="25" y1="95" x2="470" y2="95"
+            stroke="currentColor"
+            strokeWidth="0.3"
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: [0, 1, 1], opacity: [0, 0.3, 0] }}
+            transition={{
+              pathLength: { duration: 1.4, delay: 0.0, ease: DRAW_EASE },
+              opacity: { duration: 2.0, times: [0, 0.1, 1], ease: "easeOut" },
+            }}
+          />
+
+          {/* SUIT — letter by letter stroke draw */}
+          {SUIT_LETTERS.map((letter) => (
+            <motion.text
+              key={`suit-${letter.char}-${letter.x}`}
+              x={letter.x}
+              y="85"
+              fontFamily="'Playfair Display', Georgia, serif"
+              fontSize="64"
+              letterSpacing="1"
+              stroke="currentColor"
+              strokeWidth="0.8"
+              initial={{
+                strokeDasharray: `${letter.dashLen} ${letter.dashLen}`,
+                strokeDashoffset: letter.dashLen,
+                fillOpacity: 0,
+              }}
+              animate={{
+                strokeDashoffset: 0,
+                fillOpacity: 1,
+                fill: "currentColor",
+              }}
+              transition={{
+                strokeDashoffset: {
+                  duration: 0.45,
+                  delay: letter.delay,
+                  ease: DRAW_EASE,
+                },
+                fillOpacity: {
+                  duration: 0.3,
+                  delay: letter.delay + 0.4,
+                  ease: "easeOut",
+                },
+              }}
+            >
+              {letter.char}
+            </motion.text>
+          ))}
+
+          {/* Bowtie — draws with a cinematic sequence */}
           <g transform="translate(195, 60)">
+            {/* Left triangle */}
             <motion.polygon
-              points="0,-20 0,20 25,0" stroke="#8426C1" strokeWidth="1"
+              points="0,-20 0,20 25,0"
+              stroke="#8426C1"
+              strokeWidth="1.2"
               initial={{ pathLength: 0, fillOpacity: 0 }}
               animate={{ pathLength: 1, fillOpacity: 1, fill: "#8426C1" }}
               transition={{
-                pathLength: { duration: 0.5, delay: 0.2, ease: "easeInOut" },
-                fillOpacity: { duration: 0.25, delay: 0.6 }
+                pathLength: { duration: 0.55, delay: 0.5, ease: DRAW_EASE },
+                fillOpacity: { duration: 0.35, delay: 1.0, ease: "easeOut" },
               }}
             />
+            {/* Right triangle */}
             <motion.polygon
-              points="50,-20 50,20 25,0" stroke="#8426C1" strokeWidth="1"
+              points="50,-20 50,20 25,0"
+              stroke="#8426C1"
+              strokeWidth="1.2"
               initial={{ pathLength: 0, fillOpacity: 0 }}
               animate={{ pathLength: 1, fillOpacity: 1, fill: "#8426C1" }}
               transition={{
-                pathLength: { duration: 0.5, delay: 0.3, ease: "easeInOut" },
-                fillOpacity: { duration: 0.25, delay: 0.7 }
+                pathLength: { duration: 0.55, delay: 0.65, ease: DRAW_EASE },
+                fillOpacity: { duration: 0.35, delay: 1.1, ease: "easeOut" },
               }}
             />
+            {/* Center knot — pops after triangles fill */}
             <motion.circle
-              cx="25" cy="0" r="4" fill="#8426C1"
+              cx="25"
+              cy="0"
+              r="4"
+              fill="#8426C1"
               initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.8, type: "spring" }}
+              animate={{ scale: [0, 1.4, 1], opacity: 1 }}
+              transition={{
+                duration: 0.4,
+                delay: 1.4,
+                ease: [0.34, 1.56, 0.64, 1],
+              }}
             />
           </g>
 
-          {/* FITTER */}
-          <motion.text
-            x="260" y="85" fontFamily="'Playfair Display', Georgia, serif" fontSize="64" letterSpacing="1"
-            stroke="currentColor" strokeWidth="0.5"
-            initial={{ strokeDasharray: "350 350", strokeDashoffset: 350, fillOpacity: 0 }}
-            animate={{ strokeDashoffset: 0, fillOpacity: 1, fill: "currentColor" }}
-            transition={{
-              strokeDashoffset: { duration: 0.7, delay: 0.15, ease: "easeInOut" },
-              fillOpacity: { duration: 0.3, delay: 0.75 }
-            }}
-          >
-            FITTER
-          </motion.text>
+          {/* FITTER — letter by letter stroke draw */}
+          {FITTER_LETTERS.map((letter) => (
+            <motion.text
+              key={`fitter-${letter.char}-${letter.x}`}
+              x={letter.x}
+              y="85"
+              fontFamily="'Playfair Display', Georgia, serif"
+              fontSize="64"
+              letterSpacing="1"
+              stroke="currentColor"
+              strokeWidth="0.8"
+              initial={{
+                strokeDasharray: `${letter.dashLen} ${letter.dashLen}`,
+                strokeDashoffset: letter.dashLen,
+                fillOpacity: 0,
+              }}
+              animate={{
+                strokeDashoffset: 0,
+                fillOpacity: 1,
+                fill: "currentColor",
+              }}
+              transition={{
+                strokeDashoffset: {
+                  duration: 0.45,
+                  delay: letter.delay,
+                  ease: DRAW_EASE,
+                },
+                fillOpacity: {
+                  duration: 0.3,
+                  delay: letter.delay + 0.4,
+                  ease: "easeOut",
+                },
+              }}
+            >
+              {letter.char}
+            </motion.text>
+          ))}
 
-          {/* phuket tag */}
+          {/* phuket tag — swings in */}
           <g transform="translate(365, 80) rotate(4)">
             <motion.rect
-              x="0" y="0" width="105" height="42" rx="4" fill="#B342DD"
-              initial={{ scale: 0, opacity: 0, transformOrigin: "center" }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.9, type: "spring", bounce: 0.4 }}
+              x="0"
+              y="0"
+              width="105"
+              height="42"
+              rx="4"
+              fill="#B342DD"
+              initial={{ scale: 0, opacity: 0, rotate: -20 }}
+              animate={{ scale: 1, opacity: 1, rotate: 0 }}
+              style={{ transformOrigin: "0% 0%" }}
+              transition={{
+                duration: 0.5,
+                delay: 1.7,
+                type: "spring",
+                stiffness: 220,
+                damping: 14,
+              }}
             />
             <motion.text
-              x="52.5" y="28" fontFamily="'Playfair Display', Georgia, serif" fontStyle="italic" fontSize="24" textAnchor="middle" fill="white"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.25, delay: 1.0 }}
+              x="52.5"
+              y="28"
+              fontFamily="'Playfair Display', Georgia, serif"
+              fontStyle="italic"
+              fontSize="24"
+              textAnchor="middle"
+              fill="white"
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, delay: 1.9, ease: "easeOut" }}
             >
               phuket
             </motion.text>
@@ -109,7 +231,7 @@ export function Hero() {
         className="w-full max-w-5xl mx-auto flex flex-col items-center text-center relative z-10 pt-[22vh] md:pt-[26vh]"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 1.8, ease: EASE }}
+        transition={{ duration: 0.9, delay: 2.8, ease: EASE }}
       >
         <h1 className="font-serif leading-[0.9] text-foreground tracking-tight mb-4 md:mb-6 flex flex-col items-center w-full">
           <span className="block text-5xl md:text-8xl lg:text-[9rem] font-black">
@@ -125,7 +247,7 @@ export function Hero() {
           className="text-[10px] md:text-sm tracking-[0.2em] uppercase text-foreground/50 font-sans mb-8 md:mb-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 2.0, ease: EASE }}
+          transition={{ duration: 0.8, delay: 3.0, ease: EASE }}
         >
           Patong Beach, Phuket
         </motion.p>
@@ -135,7 +257,7 @@ export function Hero() {
           className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 2.1, ease: EASE }}
+          transition={{ duration: 0.8, delay: 3.1, ease: EASE }}
         >
           <a
             href="#consultation"
@@ -160,13 +282,13 @@ export function Hero() {
         className="absolute inset-4 lg:inset-8 border border-foreground/10 pointer-events-none z-0 hidden md:block"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5, duration: 2, ease: EASE }}
+        transition={{ delay: 3.5, duration: 2, ease: EASE }}
       />
       <motion.div
         className="absolute inset-[17px] lg:inset-[33px] border border-foreground/5 pointer-events-none z-0 hidden md:block"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.7, duration: 2, ease: EASE }}
+        transition={{ delay: 3.7, duration: 2, ease: EASE }}
       />
     </section>
   )
