@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     siteName: 'Suit Fitter',
     images: [
       {
-        url: '/og-image.jpg?v=2',
+        url: '/og-image.jpg?v=3',
         width: 1200,
         height: 630,
         alt: 'Suit Fitter - Bespoke Tailoring in Phuket',
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Suit Fitter | Bespoke Tailoring in Phuket',
     description: 'Tailored in Phuket. Worn Everywhere. 900+ five-star reviews.',
-    images: ['/og-image.jpg?v=2'],
+    images: ['/og-image.jpg?v=3'],
   },
 }
 
