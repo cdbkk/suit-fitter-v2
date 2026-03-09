@@ -19,7 +19,7 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   title: 'Suit Fitter | Bespoke Tailoring in Phuket',
   description: 'Experience the pinnacle of bespoke tailoring in Patong Beach, Phuket. Hand-crafted suits with master craftsmanship, premium fabrics, and timeless elegance.',
-  metadataBase: new URL('https://suit-fitter.com'),
+  metadataBase: new URL('https://suit.clearpath.cx'),
   icons: {
     icon: [
       {
@@ -39,10 +39,24 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Suit Fitter | Bespoke Tailoring in Phuket',
-    description: 'Experience the pinnacle of bespoke tailoring in Patong Beach, Phuket.',
+    description: 'Tailored in Phuket. Worn Everywhere. 900+ five-star reviews.',
     type: 'website',
     locale: 'en_US',
     siteName: 'Suit Fitter',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Suit Fitter - Bespoke Tailoring in Phuket',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Suit Fitter | Bespoke Tailoring in Phuket',
+    description: 'Tailored in Phuket. Worn Everywhere. 900+ five-star reviews.',
+    images: ['/og-image.jpg'],
   },
 }
 
